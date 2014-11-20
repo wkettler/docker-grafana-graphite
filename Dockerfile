@@ -28,22 +28,14 @@ RUN     pip install --install-option="--prefix=/var/lib/graphite" --install-opti
 
 
 # --------------------------------------- #
-#   Install & Patch StatsD and Grafana    #
+#   Install & Grafana    #
 # --------------------------------------- #
 
 #  We are patching StatsD and Grafana to play nice with url-encoded metric names, that makes the dashboard more usable when displaying 
 #  metrics names for actors, http traces and dispatchers.
 
-# Install & Patch StatsD
-RUN     mkdir /src                                                                                                                      &&\
-        git clone https://github.com/etsy/statsd.git /src/statsd                                                                        &&\
-        cd /src/statsd                                                                                                                  &&\ 
-        git checkout v0.7.2                                                                                                             &&\
-        sed -i -e "s|.replace(/\[^a-zA-Z_\\\\-0-9\\\\.]/g, '');|.replace(/[^a-zA-Z_\\\\-0-9\\\\.\\\\%]/g, '');|" /src/statsd/stats.js
-
-
 # Install & Patch Grafana
-RUN     mkdir /src/grafana                                                                                                              &&\
+RUN     mkdir -p /src/grafana                                                                                                           &&\
         git clone https://github.com/grafana/grafana.git /src/grafana                                                                   &&\
         cd /src/grafana                                                                                                                 &&\
         git checkout v1.7.0
@@ -65,9 +57,6 @@ RUN     git apply /src/grafana/correctly-show-urlencoded-metrics.patch --directo
 ADD     ./elasticsearch/run /usr/local/bin/run_elasticsearch
 RUN     chown -R elasticsearch:elasticsearch /var/lib/elasticsearch
 RUN     mkdir -p /tmp/elasticsearch && chown elasticsearch:elasticsearch /tmp/elasticsearch
-
-# Confiure StatsD
-ADD     ./statsd/config.js /src/statsd/config.js
 
 # Configure Whisper, Carbon and Graphite-Web
 ADD     ./graphite/initial_data.json /var/lib/graphite/webapp/graphite/initial_data.json

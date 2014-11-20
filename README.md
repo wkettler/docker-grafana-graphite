@@ -2,8 +2,7 @@ Graphite + Grafana + Nexenta Dashboard
 ---------------------------------------------
 
 This image contains a sensible default configuration of Graphite and Grafana, and comes bundled with a example
-dashboard that gives you the basic metrics currently collected by Kamon for both Actors and Traces. There are two ways
-for using this image:
+dashboard that gives you the basic metrics currently collected by the Nexenta collectd package.
 
 
 ### Building the image ###

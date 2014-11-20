@@ -27,9 +27,9 @@ RUN     pip install --install-option="--prefix=/var/lib/graphite" --install-opti
 
 
 
-# --------------------------------------- #
-#   Install & Grafana    #
-# --------------------------------------- #
+# ---------------------------- #
+#   Install & Patch Grafana    #
+# ---------------------------- #
 
 #  We are patching StatsD and Grafana to play nice with url-encoded metric names, that makes the dashboard more usable when displaying 
 #  metrics names for actors, http traces and dispatchers.
@@ -38,11 +38,9 @@ RUN     pip install --install-option="--prefix=/var/lib/graphite" --install-opti
 RUN     mkdir -p /src/grafana                                                                                                           &&\
         git clone https://github.com/grafana/grafana.git /src/grafana                                                                   &&\
         cd /src/grafana                                                                                                                 &&\
-        git checkout v1.7.0
+        git checkout v1.8.1
 
-ADD     ./grafana/correctly-show-urlencoded-metrics.patch /src/grafana/correctly-show-urlencoded-metrics.patch
-RUN     git apply /src/grafana/correctly-show-urlencoded-metrics.patch --directory=/src/grafana                                         &&\
-        cd /src/grafana                                                                                                                 &&\
+RUN     cd /src/grafana                                                                                                                 &&\
         npm install                                                                                                                     &&\
         npm install -g grunt-cli                                                                                                        &&\
         grunt build 

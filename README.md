@@ -4,6 +4,8 @@ Graphite + Grafana + Nexenta Dashboard
 This image contains a sensible default configuration of Graphite and Grafana, and comes bundled with a example
 dashboard that gives you the basic metrics currently collected by the Nexenta collectd package.
 
+This repository was originally forked from [kamon-io](https://github.com/kamon-io/docker-grafana-graphite).
+
 
 ### Building the image ###
 
